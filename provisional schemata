@@ -1,0 +1,73 @@
+SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
+SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
+SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
+
+CREATE SCHEMA IF NOT EXISTS `mydb` DEFAULT CHARACTER SET latin1 COLLATE latin1_swedish_ci ;
+USE `mydb` ;
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Catalogs`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`Catalogs` (
+  `idCatalogs` INT NOT NULL ,
+  `Catalog_name` VARCHAR(45) NULL ,
+  `Catalog_description` VARCHAR(45) NULL ,
+  PRIMARY KEY (`idCatalogs`) )
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Catalog_Structure`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`Catalog_Structure` (
+  `idCatalog_Structure` INT NOT NULL ,
+  `Catalog_id` INT NULL ,
+  `parent_catalog_level_number` VARCHAR(45) NULL ,
+  `catalog_level_name` VARCHAR(45) NULL ,
+  `catalog_level_description` VARCHAR(45) NULL ,
+  PRIMARY KEY (`idCatalog_Structure`) ,
+  INDEX `catalog_id_idx` () ,
+  INDEX `parent_catalog_level_number_idx` () ,
+  CONSTRAINT `catalog_id`
+    FOREIGN KEY ()
+    REFERENCES `mydb`.`Catalogs` ()
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+  CONSTRAINT `parent_catalog_level_number`
+    FOREIGN KEY ()
+    REFERENCES `mydb`.`Catalogs` ()
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `mydb`.`Catalog_Contents`
+-- -----------------------------------------------------
+CREATE  TABLE IF NOT EXISTS `mydb`.`Catalog_Contents` (
+  `Catalog_entry_id` INT NOT NULL ,
+  `catalog_level_number` INT NULL ,
+  `parent_entry_id` INT NULL ,
+  `previous_entry_id` INT NULL ,
+  `next_entry_id` INT NULL ,
+  `manufacturer` VARCHAR(45) NULL ,
+  `product_reference_number` VARCHAR(45) NULL ,
+  `product_description` VARCHAR(45) NULL ,
+  `photo_filename` VARCHAR(45) NULL ,
+  `catalog_entry_name` VARCHAR(45) NULL ,
+  `price_in_dollars` DECIMAL(2) NULL ,
+  `price_in_euros` DECIMAL(2) NULL ,
+  `price_in_pounds` DECIMAL(2) NULL ,
+  `capacity` INT NULL ,
+  `length` INT NULL ,
+  `height` INT NULL ,
+  `width` INT NULL ,
+  `other_details` VARCHAR(45) NULL ,
+  PRIMARY KEY (`Catalog_entry_id`) )
+ENGINE = InnoDB;
+
+
+
+SET SQL_MODE=@OLD_SQL_MODE;
+SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
+SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
